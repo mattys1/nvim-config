@@ -63,8 +63,7 @@ require("lazy").setup({
 
 					textobjects = {
 						select = {
-							enable = true, -- BROKEN RIGHT NOW FOR SELECTING IN FUNCTIONS
-
+							enable = true, -- broken, i think it doenst recognize what a class and function is maybe fuck me 
 							-- Automatically jump forward to textobj, similar to targets.vim
 							lookahead = true,
 
@@ -252,6 +251,7 @@ require("lazy").setup({
 					map('n', '<leader>lgt', vim.lsp.buf.type_definition, opts)
 					map('n', '<leader>lR', vim.lsp.buf.references, opts)
 					map('n', '<leader>lr', vim.lsp.buf.rename, opts)
+					map('n', '<leader>lca', vim.lsp.buf.code_action, opts)
 					map('n', '<leader>lF', function()
 						vim.lsp.buf.format { async = true }
 					end, opts)
