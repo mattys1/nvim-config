@@ -402,7 +402,6 @@ require("lazy").setup({
 	{
 		'stevearc/oil.nvim',
 		opts = {},
-		-- Optional dependencies
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			require("oil").setup({
@@ -415,7 +414,6 @@ require("lazy").setup({
 				},
 
 				float = {
-					-- Padding around the floating window
 					padding = 3,
 				}
 			})
@@ -599,6 +597,9 @@ map('n', '<leader>nh', function() vim.cmd.nohlsearch() end)
 
 -- quick :w
 map('n', '<leader>w', function() vim.cmd.write() end)
+
+--quick :q!
+map('n', '<leader>q', function() vim.cmd(":q!") end)
 
 -- markdown and latex remaps for better movement in wrapped lines
 vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
