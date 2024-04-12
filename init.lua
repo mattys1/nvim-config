@@ -1,5 +1,3 @@
--- GIT TEST
-
 -- GLOBALS:
 
 vim.g.mapleader = ' '
@@ -248,13 +246,13 @@ require("lazy").setup({
 					-- Buffer local mappings.
 					-- See `:help vim.lsp.*` for documentation on any of the below function
 					local opts = {buffer = ev.buf}
-					vim.keymap.set('n', '<leader>lgc', vim.lsp.buf.declaration, opts)
-					vim.keymap.set('n', '<leader>lgf', vim.lsp.buf.definition, opts)
-					vim.keymap.set('n', '<leader>li', vim.lsp.buf.hover, opts)
-					vim.keymap.set('n', '<leader>lgt', vim.lsp.buf.type_definition, opts)
-					vim.keymap.set('n', '<leader>lR', vim.lsp.buf.references, opts)
-					vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename, opts)
-					vim.keymap.set('n', '<leader>lF', function()
+					map('n', '<leader>lgc', vim.lsp.buf.declaration, opts)
+					map('n', '<leader>lgf', vim.lsp.buf.definition, opts)
+					map('n', '<leader>li', vim.lsp.buf.hover, opts)
+					map('n', '<leader>lgt', vim.lsp.buf.type_definition, opts)
+					map('n', '<leader>lR', vim.lsp.buf.references, opts)
+					map('n', '<leader>lr', vim.lsp.buf.rename, opts)
+					map('n', '<leader>lF', function()
 						vim.lsp.buf.format { async = true }
 					end, opts)
 				end
@@ -401,7 +399,33 @@ require("lazy").setup({
 		end
 	},
 
-	{ 
+	{
+		'stevearc/oil.nvim',
+		opts = {},
+		-- Optional dependencies
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("oil").setup({
+				default_file_explorer = true,
+				delete_to_trash = true,
+
+				view_options = {
+					show_hidden = true,
+					natural_order = true,
+				},
+
+				float = {
+					-- Padding around the floating window
+					padding = 3,
+				}
+			})
+
+
+			vim.keymap.set("n", "<leader>fm", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
+		end
+	},
+
+	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
 		opts = {},
