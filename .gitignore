@@ -1,0 +1,3 @@
+*.bak
+./lua-conf/
+lazy-lock.json
