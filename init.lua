@@ -116,7 +116,13 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter-textobjects",
 	},
 
-	"KarimElghamry/vim-auto-comment",
+	{
+		"terrortylor/nvim-comment",
+		config = function()
+			require('nvim_comment').setup({})
+		end
+	},
+
 	"tpope/vim-surround",
 	'tpope/vim-repeat',
 	'HiPhish/rainbow-delimiters.nvim',
