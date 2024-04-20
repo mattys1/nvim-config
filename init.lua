@@ -3,7 +3,7 @@
 vim.g.mapleader = ' '
 vim.g.netrw_keepdir = true
 
-LANGUAGE_SERVERS = {"lua_ls", "pyright", "clangd", "bashls", "marksman"} -- this is a shitty patchwork fix for automatically configuring all language servers, this probably shoul have its own file
+LANGUAGE_SERVERS = {"lua_ls", "pyright", "clangd", "bashls", "marksman",} -- this is a shitty patchwork fix for automatically configuring all language servers, this probably shoul have its own file
 
 
 -- PLUGINS:
@@ -146,6 +146,11 @@ require("lazy").setup({
 				defaults = {
 					layout_strategy = "flex",
 				},
+				pickers = {
+					find_files = {
+						hidden = true
+					},
+				},
 				extensions = {
 					fzf = {
 						fuzzy = true,                    -- false will only do exact matching
@@ -253,7 +258,7 @@ require("lazy").setup({
 					local opts = {buffer = ev.buf}
 					map('n', '<leader>lgc', vim.lsp.buf.declaration, opts)
 					map('n', '<leader>lgf', vim.lsp.buf.definition, opts)
-					map('n', '<leader>li', vim.lsp.buf.hover, opts)
+					map('n', '<leader>lh', vim.lsp.buf.hover, opts)
 					map('n', '<leader>lgt', vim.lsp.buf.type_definition, opts)
 					map('n', '<leader>lR', vim.lsp.buf.references, opts)
 					map('n', '<leader>lr', vim.lsp.buf.rename, opts)
@@ -480,8 +485,80 @@ require("lazy").setup({
 		opts = {
 
 		}
-	}
+	},
 
+	{
+		"mfussenegger/nvim-dap",
+		config = function()
+			local map = vim.keymap.set
+
+			map("n", "<leader>db", "<CMD> DapToggleBreakpoint <CR>")
+			map("n", "<leader>dr", "<CMD> DapContinue <CR>")
+		end
+	},
+
+	{
+		"jay-babu/mason-nvim-dap.nvim",
+		event = "VeryLazy",
+		dependencies = {
+			"williamboman/mason.nvim",
+			"mfussenegger/nvim-dap",
+		},
+		opts = {
+		},
+		config = function()
+			local masonNvimDap = require("mason-nvim-dap")
+			masonNvimDap.setup({
+				handlers = {},
+
+				ensure_installed = {
+					"codelldb",
+				},
+
+				auto_install = true
+
+			})
+		end
+	},
+
+	{
+		"rcarriga/nvim-dap-ui",
+		event = "VeryLazy",
+		dependencies = {
+			"mfussenegger/nvim-dap",
+			"nvim-neotest/nvim-nio",
+		},
+		config = function()
+			local dap = require("dap")
+			local dapui = require("dapui")
+
+			dapui.setup()
+			
+			-- config when ui will open and close
+			dap.listeners.after.event_initialized.dapui_config = function()
+				dapui.open()
+			end
+			dap.listeners.before.attach.dapui_config = function()
+				dapui.open()
+			end
+			dap.listeners.before.launch.dapui_config = function()
+				dapui.open()
+			end
+			dap.listeners.before.event_terminated.dapui_config = function()
+				dapui.close()
+			end
+			dap.listeners.before.event_exited.dapui_config = function()
+				dapui.close()
+			end
+
+			local map = vim.keymap.set
+
+			map("n", "<leader>dc", function()
+				dap.disconnect()
+				dapui.close()
+			end)
+		end
+	},
 	-- {
 	-- 	"f3fora/cmp-spell",
 	-- 	config = function()
@@ -555,7 +632,7 @@ vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
 		vim.opt.spell = true
 		vim.opt.spelllang = {"en_us", "pl"}
 		vim.opt.wrap = true
- 		vim.opt.textwidth = 80
+		vim.opt.textwidth = 80
 	end
 })
 -- REMAPS: 
@@ -629,11 +706,11 @@ end
 -- Enter insert mode at the correct indentation, by u/motboken
 
 vim.cmd[[function! IndentWithI()
-    if len(getline('.')) == 0
-        return "\"_cc"
-    else
-        return "i"
-    endif
+if len(getline('.')) == 0
+return "\"_cc"
+else
+return "i"
+endif
 endfunction
 nnoremap <expr> i IndentWithI()]]
 
