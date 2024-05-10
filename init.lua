@@ -728,6 +728,10 @@ map('n', 'dd', '"_dd')
 map('n', 'D', '"_D')
 map('x', 'D', '"_D')
 
+-- same thing with c
+map('x', 'c', '"_c')
+map('n', 'c', '"_c')
+
 -- Remap d to delete and leader d to cut
 map('n', '<leader>d', 'd')
 map('n', '<leader>dd', 'dd')
