@@ -752,9 +752,6 @@ map('n', 'J', ':m .+1<CR>==')
 map('v', 'K', ':m \'<-2<CR>gv=gv')
 map('v', 'J', ':m \'>+1<CR>gv=gv')
 
--- quick nohlsearch command
-map('n', '<leader>nh', function() vim.cmd.nohlsearch() end)
-
 -- quick :w
 map('n', '<leader>w', function() vim.cmd.write() end)
 
