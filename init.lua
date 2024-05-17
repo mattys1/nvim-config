@@ -278,7 +278,13 @@ require("lazy").setup({
 		-- follow latest release.
 		version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
 		-- install jsregexp (optional!).
-		build = "make install_jsregexp"
+		build = "make install_jsregexp",
+
+		config = function()
+			vim.keymap.set({"i", "s"}, "<C-j>", function() ls.jump( 1) end, {silent = true})
+			vim.keymap.set({"i", "s"}, "<C-k>", function() ls.jump(-1) end, {silent = true})
+		end
+
 	},
 
 	'hrsh7th/cmp-nvim-lsp',
@@ -652,6 +658,16 @@ require("lazy").setup({
 			-- Toggle previous & next buffers stored within Harpoon list
 			vim.keymap.set("n", "<leader>hp", function() harpoon:list():prev() end)
 			vim.keymap.set("n", "<leader>hn", function() harpoon:list():next() end)
+		end
+	},
+
+	{
+		"lervag/vimtex",
+		lazy = false,     -- we don't want to lazy load VimTeX
+		-- tag = "v2.15", -- uncomment to pin to a specific release
+		init = function()
+			vim.g.vimtex_view_method = "zathura"
+			vim.g.maplocalleader = " "
 		end
 	},
 
