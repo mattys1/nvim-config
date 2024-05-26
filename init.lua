@@ -3,7 +3,7 @@
 vim.g.mapleader = ' '
 vim.g.netrw_keepdir = true
 
-LANGUAGE_SERVERS = {"lua_ls", "pyright", "clangd", "bashls", "marksman",} -- this is a shitty patchwork fix for automatically configuring all language servers, this probably shoul have its own file
+LANGUAGE_SERVERS = {"lua_ls", "pyright", "clangd", "bashls", "marksman", "texlab", "yamlls",} -- this is a shitty patchwork fix for automatically configuring all language servers, this probably shoul have its own file
 
 
 -- PLUGINS:
@@ -667,10 +667,24 @@ require("lazy").setup({
 		-- tag = "v2.15", -- uncomment to pin to a specific release
 		init = function()
 			vim.g.vimtex_view_method = "zathura"
-			vim.g.maplocalleader = " "
+			vim.g.maplocalleader = "\\"
+			vim.g.vimtex_compiler_method = "latexmk"
+			vim.g.vimtex_complete_envs = 1
+			vim.g.vimtex_complete_close_brackets = 1
+			vim.g.vimtex_complete_enabled = 1
 		end
 	},
 
+	-- {
+	-- 	"iurimateus/luasnip-latex-snippets.nvim",
+	--
+	-- 	requires = { "L3MON4D3/LuaSnip", "lervag/vimtex" },
+	-- 	config = function()
+	-- 		require'luasnip-latex-snippets'.setup()
+	-- 		-- or setup({ use_treesitter = true })
+	-- 		require("luasnip").config.setup { enable_autosnippets = true }
+	-- 	end,
+	-- },
 })
 
 -- OPTIONS:
