@@ -1,5 +1,6 @@
 return {
 	'hrsh7th/nvim-cmp',
+	event = { "InsertEnter", "CmdlineEnter" },
 	config = function()
 		-- Set up nvim-cmp.
 		local cmp = require'cmp'
@@ -19,6 +20,10 @@ return {
 				-- documentation = cmp.config.window.bordered(),
 			},
 			mapping = cmp.mapping.preset.insert({
+				["<C-p>"] = cmp.config.disable,
+                ["<C-n>"] = cmp.config.disable,
+				['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item()),
+				['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item()),
 				['<C-b>'] = cmp.mapping.scroll_docs(-4),
 				['<C-f>'] = cmp.mapping.scroll_docs(4),
 				['<C-Space>'] = cmp.mapping.complete(),

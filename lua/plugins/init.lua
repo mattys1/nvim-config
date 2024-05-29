@@ -45,7 +45,8 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
-	superEarlyPlugs,
+	superEarlyPlugsContents,
 	earlyPlugsContents,
 	latePlugsContents,
 })
+

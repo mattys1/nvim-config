@@ -50,8 +50,11 @@ vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
 	callback = function()
 		vim.opt.spell = true
 		vim.opt.spelllang = {"en_us", "pl"}
-		vim.opt.wrap = true
+		-- vim.opt.wrap = true
 		vim.opt.textwidth = 80
+		vim.cmd[[
+			call pencil#init()
+		]]
 	end
 })
 -- REMAPS: 
@@ -112,6 +115,7 @@ vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
 		map("x", "j", "gj")
 		map("n", "k", "gk")
 		map("x", "k", "gk")
+		-- map({"i", 'v'}, "<ESC>", "<ESC>gqap")
 	end
 })
 

@@ -24,8 +24,22 @@ return {
 			},
 		})
 		local map = vim.keymap.set
-		map('n', '<leader>tf', function() vim.cmd(":Telescope find_files") end, {})
-		map('n', '<leader>tg', function() vim.cmd(":Telescope live_grep") end, {})
+		map('n', '<leader>tf', function()
+			local root = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), "\n", "")
+			if vim.v.shell_error == 0 then
+				require("telescope.builtin").find_files({ cwd = root })
+			else
+				require("telescope.builtin").find_files()
+			end
+		end, {})
+		map('n', '<leader>tg', function()
+			local root = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), "\n", "")
+			if vim.v.shell_error == 0 then
+				require("telescope.builtin").live_grep({ cwd = root })
+			else
+				require("telescope.builtin").live_grep()
+			end
+		end, {})
 		map('n', '<leader>th', function() vim.cmd(":Telescope help_tags") end, {})
 		map('n', '<leader>tb', function() vim.cmd(":Telescope buffers") end, {})
 		telescope.load_extension('fzf')
