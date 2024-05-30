@@ -17,11 +17,19 @@ return {
 			condition = function(buf)
 				local fn = vim.fn
 				local utils = require("auto-save.utils.data")
+				local function is_good_filetype()
+					if vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t") == "Table of contents (VimTeX)" then
+						return false
+					elseif vim.bo.filetype() == "markdown" or
+						vim.bo.filetype() == "tex" then
+						return true
+					end
+				end
 
 				if fn.getbufvar(buf, "&modifiable") == 1 and
-				   vim.api.nvim_get_mode().mode ~= 'i' or vim.api.nvim_get_mode().mode ~= 'ic' and
-				   vim.bo.filetype() == "markdown" or vim.bo.filetype() == "tex" and
-				   utils.not_in(fn.getbufvar(buf, "&filetype"), {}) then
+					vim.api.nvim_get_mode().mode ~= 'i' or vim.api.nvim_get_mode().mode ~= 'ic' and
+					is_good_filetype() and
+					utils.not_in(fn.getbufvar(buf, "&filetype"), {}) then
 						return true -- met condition(s), can save
 				end
 				return false -- can't save
