@@ -7,6 +7,7 @@ return {
 				message = function() -- message to print on save
 					return ("AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"))
 				end,
+				-- message = nil,
 				dim = 0.18, -- dim the color of `message`
 				cleaning_interval = 1250, -- (milliseconds) automatically clean MsgArea after displaying `message`. See :h MsgArea
 			},
@@ -17,22 +18,25 @@ return {
 			condition = function(buf)
 				local fn = vim.fn
 				local utils = require("auto-save.utils.data")
+				-- local function is_good_filetype()
+				-- 	if vim.fn.expand('%') == "Table of contents (VimTeX)" or not vim.fn.filereadable(vim.api.nvim_buf_get_name(0)) then -- this is bad
+				-- 		return false
+				-- 	elseif vim.bo.filetype() == "markdown" or
+				-- 		vim.bo.filetype() == "tex" then
+				-- 		return true
+				-- 	end
+				--
+				-- 	return false
+				-- end
 				local function is_good_filetype()
-					if vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t") == "Table of contents (VimTeX)" then
-						return false
-					elseif vim.bo.filetype() == "markdown" or
-						vim.bo.filetype() == "tex" then
-						return true
-					end
+					local filetype =  vim.api.nvim_buf_get_option(buf, 'filetype') -- why is this deprecated, the other one crashes the editor
+						return filetype == "tex" or filetype == "markdown"
 				end
 
-				if fn.getbufvar(buf, "&modifiable") == 1 and
-					vim.api.nvim_get_mode().mode ~= 'i' or vim.api.nvim_get_mode().mode ~= 'ic' and
-					is_good_filetype() and
-					utils.not_in(fn.getbufvar(buf, "&filetype"), {}) then
-						return true -- met condition(s), can save
-				end
-				return false -- can't save
+				return fn.getbufvar(buf, "&modifiable") == 1 and
+					(vim.api.nvim_get_mode().mode ~= 'i' or vim.api.nvim_get_mode().mode ~= 'ic') and
+					utils.not_in(fn.getbufvar(buf, "&filetype"), {}) and
+					is_good_filetype()
 			end,
 			write_all_buffers = false, -- write all buffers when the current one meets `condition`
 			debounce_delay = 1000, -- saves the file at most every `debounce_delay` milliseconds
