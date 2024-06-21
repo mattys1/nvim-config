@@ -8,10 +8,13 @@ return {
 	config = function()
 		require("luasnip.loaders.from_vscode").lazy_load()
 		local ls = require"luasnip"
+		local lsextras = require"luasnip.extras"
+
 		local s = ls.snippet
 		local t = ls.text_node
 		local i = ls.insert_node
 		local fmt = require("luasnip.extras.fmt").fmt
+		local rep = lsextras.rep
 		-- vim.print(vim.g.snippets)
 		ls.add_snippets("tex", {
 			s("imag", fmt(
@@ -29,9 +32,19 @@ return {
 			s("sss", fmt(
 				[[
 					\somestuffstyle{{{}}}
-				]], { i(1, "<TEXT>"),  }
+				]], { i(1, "<TEXT>") }
 			))
 		})
+
+		-- ls.add_snippets({"cpp", "c", "h"}, {
+		-- 	s("#dfhg", fmt(
+		-- 		[[
+		-- 			#ifndef {}
+		-- 				#define {}
+		-- 			#endif
+		-- 		]], { i(1, "VAL"), rep(1) }
+		-- 	))
+		-- })
 
 		vim.keymap.set({"i", "s"}, "<C-n>", function() ls.jump( 1) end, {silent = true})
 		vim.keymap.set({"i", "s"}, "<C-m>", function() ls.jump(-1) end, {silent = true})
