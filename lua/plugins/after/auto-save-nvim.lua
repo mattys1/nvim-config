@@ -19,6 +19,9 @@ return {
 				local fn = vim.fn
 				local utils = require("auto-save.utils.data")
 
+				local function buf_is_oil_maybe() -- dumb hack
+					return string.sub(vim.api.nvim_buf_get_name(buf), 1, 6) == "oil://"
+				end
 				-- local function is_good_filetype()
 				-- 	local filetype =  vim.api.nvim_buf_get_option(buf, 'filetype') -- why is this deprecated, the other one crashes the editor
 				-- 		return filetype == "tex" or filetype == "markdown"
@@ -26,7 +29,8 @@ return {
 
 				return fn.getbufvar(buf, "&modifiable") == 1 and
 					(vim.api.nvim_get_mode().mode ~= 'i' or vim.api.nvim_get_mode().mode ~= 'ic') and
-					utils.not_in(fn.getbufvar(buf, "&filetype"), {}) --and
+					utils.not_in(fn.getbufvar(buf, "&filetype"), {}) and
+					not buf_is_oil_maybe()
 					-- is_good_filetype()
 
 			end,
