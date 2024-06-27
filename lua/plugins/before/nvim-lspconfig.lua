@@ -33,7 +33,7 @@ return {
 		-- clangd
 		local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 		require('lspconfig')['clangd'].setup {
-			cmd = { "clangd", "--headerInsertion=never", }, -- have to specify headerInsertion here cause config.yaml doesn't want to goddamn cooperate
+			cmd = { "clangd", "--header-insertion=never"}, -- have to specify headerInsertion here cause config.yaml doesn't want to goddamn cooperate
 			capabilities = capabilities
 		}
 
