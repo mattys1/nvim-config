@@ -29,6 +29,14 @@ return {
 				},
 			},
 		})
+
+		-- clangd
+		local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+		require('lspconfig')['clangd'].setup {
+			cmd = { "clangd", "--headerInsertion=never", }, -- have to specify headerInsertion here cause config.yaml doesn't want to goddamn cooperate
+			capabilities = capabilities
+		}
+
 		-- lsp_remaps:
 		local map = vim.keymap.set
 		map('n', '<leader>ldf', vim.diagnostic.open_float)
@@ -52,5 +60,8 @@ return {
 				end, opts)
 			end
 		}))
+
+		-- logging
+		vim.lsp.set_log_level("trace")
 	end
 }
