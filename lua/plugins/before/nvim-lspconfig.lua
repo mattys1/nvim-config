@@ -1,9 +1,10 @@
-local LANGUAGE_SERVERS = {"lua_ls", "pyright", "clangd", "bashls", "marksman", "texlab", "yamlls",} -- this is a shitty patchwork fix for automatically configuring all language servers, this probably shoul have its own file
+local LANGUAGE_SERVERS = {"lua_ls", "pyright", "clangd", "bashls", "marksman", "texlab", "yamlls", } -- this is a shitty patchwork fix for automatically configuring all language servers
 
 return {
 	'neovim/nvim-lspconfig',
 	config = function()
 		-- lsp:
+		local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 		local lspconfig = require("lspconfig")
 		-- setup default lsp configs
 		for _, server in ipairs(LANGUAGE_SERVERS) do
@@ -31,11 +32,26 @@ return {
 		})
 
 		-- clangd
-		local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 		require('lspconfig')['clangd'].setup {
 			cmd = { "clangd", "--header-insertion=never"}, -- have to specify headerInsertion here cause config.yaml doesn't want to goddamn cooperate
 			capabilities = capabilities
 		}
+
+		-- qmlls
+		-- require('lspconfig')['qmlls'].setup {
+		-- 	cmd = {"qmlls6"},
+		-- 	capabilities = capabilities,
+		-- 	root_dir = function()
+		-- 		local fileDir = vim.fn.expand('%:p:h')
+		-- 		local error, gitDir = os.execute("git -C " .. fileDir .. " rev-parse --show-toplevel 2> /dev/null")
+		--
+		-- 		if error then
+		-- 			return fileDir
+		-- 		end
+		--
+		-- 		return gitDir
+		-- 	end
+		-- }
 
 		-- lsp_remaps:
 		local map = vim.keymap.set
