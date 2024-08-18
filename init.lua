@@ -40,6 +40,7 @@ vim.opt.smartindent = false -- disable this and use treesitter indentation inste
 vim.opt.autochdir = true
 
 vim.opt.linebreak = true -- dont cut words in half when wrapping
+vim.opt.breakindent = true
 
 vim.cmd('autocmd BufEnter * set formatoptions-=cro')  -- disable autocomments 
 vim.cmd('autocmd BufEnter * setlocal formatoptions-=cro')
