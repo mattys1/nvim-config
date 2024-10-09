@@ -1,15 +1,34 @@
-local LANGUAGE_SERVERS = {"lua_ls", "pyright", "clangd", "bashls", "marksman", "texlab", "yamlls", } -- this is a shitty patchwork fix for automatically configuring all language servers
+local LANGUAGE_SERVERS = {
+	"lua_ls",
+	"pyright",
+	"clangd",
+	"bashls",
+	"marksman",
+	"texlab",
+	"yamlls",
+	"cmake",
+	"html",
+	"cssls",
+	"cssmodules_ls",
+	"css_variables",
+	"kotlin_language_server",
+} -- this is a shitty patchwork fix for automatically configuring all language servers
 
 return {
 	'neovim/nvim-lspconfig',
 	config = function()
 		-- lsp:
 		local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+		capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 		local lspconfig = require("lspconfig")
 		-- setup default lsp configs
 		for _, server in ipairs(LANGUAGE_SERVERS) do
-			lspconfig[server].setup({})
+			lspconfig[server].setup({
+				capabilities = capabilities
+			})
 		end
+
 		-- Lua lsp:
 		lspconfig.lua_ls.setup({
 			settings = {
@@ -38,20 +57,35 @@ return {
 		}
 
 		-- qmlls
-		-- require('lspconfig')['qmlls'].setup {
-		-- 	cmd = {"qmlls6"},
-		-- 	capabilities = capabilities,
-		-- 	root_dir = function()
-		-- 		local fileDir = vim.fn.expand('%:p:h')
-		-- 		local error, gitDir = os.execute("git -C " .. fileDir .. " rev-parse --show-toplevel 2> /dev/null")
-		--
-		-- 		if error then
-		-- 			return fileDir
-		-- 		end
-		--
-		-- 		return gitDir
-		-- 	end
-		-- }
+		require('lspconfig')['qmlls'].setup {
+			cmd = {"qmlls6"},
+			capabilities = capabilities,
+			root_dir = function()
+				local fileDir = vim.fn.expand('%:p:h')
+				local error, gitDir = os.execute("git -C " .. fileDir .. " rev-parse --show-toplevel 2> /dev/null")
+
+				if error then
+					return fileDir
+				end
+
+				return gitDir
+			end
+		}
+
+		-- vscode-html-language-server
+
+		require'lspconfig'.html.setup {
+			capabilities = capabilities,
+		}
+
+		-- cssls
+
+		require'lspconfig'.cssls.setup {
+			capabilities = capabilities,
+		}
+
+		-- kotlin
+		require'lspconfig'.kotlin_language_server.setup {}
 
 		-- lsp_remaps:
 		local map = vim.keymap.set
@@ -78,6 +112,6 @@ return {
 		}))
 
 		-- logging
-		vim.lsp.set_log_level("trace")
+		-- vim.lsp.set_log_level("trace")
 	end
 }

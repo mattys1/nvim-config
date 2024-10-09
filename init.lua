@@ -2,11 +2,12 @@
 
 vim.g.mapleader = ' '
 vim.g.netrw_keepdir = true
+-- vim.g.loaded_netrwPlugin = false
 
 -- PLUGINS:
 require("plugins")
 -- force english
-vim.cmd("language en_GB.utf-8")
+-- vim.cmd("language en_GB.utf-8")
 
 -- Splitting:
 
@@ -110,22 +111,22 @@ map('n', '<leader>q', function() vim.cmd(":q!") end)
 
 -- markdown and latex remaps for better movement in wrapped lines
 vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
-	pattern = {"*.md", "*.tex"},
-	callback = function()
-		map("n", "j", "gj")
-		map("x", "j", "gj")
-		map("n", "k", "gk")
-		map("x", "k", "gk")
-		-- map({"i", 'v'}, "<ESC>", "<ESC>gqap")
-	end
+pattern = {"*.md", "*.tex"},
+callback = function()
+	map("n", "j", "gj")
+	map("x", "j", "gj")
+	map("n", "k", "gk")
+	map("x", "k", "gk")
+	-- map({"i", 'v'}, "<ESC>", "<ESC>gqap")
+end
 })
 
 -- VSCode fixes:
 
 if vim.g.vscode == true then
-	-- Keep undo/redo lists in sync with VSCode
-	map("<silent>", 'u', "<Cmd>call VSCodeNotify('undo')<CR>")
-	map("<silent>", "<C-r>", "<Cmd>call VSCodeNotify('redo')<CR>")
+-- Keep undo/redo lists in sync with VSCode
+map("<silent>", 'u', "<Cmd>call VSCodeNotify('undo')<CR>")
+map("<silent>", "<C-r>", "<Cmd>call VSCodeNotify('redo')<CR>")
 end
 
 -- Enter insert mode at the correct indentation, by u/motboken
@@ -140,9 +141,9 @@ endfunction
 nnoremap <expr> i IndentWithI()]]
 
 vim.api.nvim_create_autocmd('TextYankPost', {
-	desc = 'Highlight when yanking (copying) text',
-	group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
-	callback = function()
-		vim.highlight.on_yank()
-	end,
+desc = 'Highlight when yanking (copying) text',
+group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
+callback = function()
+	vim.highlight.on_yank()
+end,
 })
