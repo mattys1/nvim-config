@@ -124,9 +124,9 @@ end
 -- VSCode fixes:
 
 if vim.g.vscode == true then
--- Keep undo/redo lists in sync with VSCode
-map("<silent>", 'u', "<Cmd>call VSCodeNotify('undo')<CR>")
-map("<silent>", "<C-r>", "<Cmd>call VSCodeNotify('redo')<CR>")
+	-- Keep undo/redo lists in sync with VSCode
+	map("<silent>", 'u', "<Cmd>call VSCodeNotify('undo')<CR>")
+	map("<silent>", "<C-r>", "<Cmd>call VSCodeNotify('redo')<CR>")
 end
 
 -- Enter insert mode at the correct indentation, by u/motboken
@@ -141,9 +141,9 @@ endfunction
 nnoremap <expr> i IndentWithI()]]
 
 vim.api.nvim_create_autocmd('TextYankPost', {
-desc = 'Highlight when yanking (copying) text',
-group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
-callback = function()
-	vim.highlight.on_yank()
-end,
+	desc = 'Highlight when yanking (copying) text',
+	group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
+	callback = function()
+		vim.highlight.on_yank()
+	end,
 })
