@@ -57,6 +57,7 @@ vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
 		vim.cmd[[
 			call pencil#init()
 		]]
+		vim.cmd(":VimtexCompile") -- this probably should be in the vimtex plugin file
 	end
 })
 -- REMAPS: 
