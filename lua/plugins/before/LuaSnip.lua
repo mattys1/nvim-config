@@ -36,6 +36,14 @@ return {
 			))
 		})
 
+		ls.add_snippets("tex", {
+			s("ttt", fmt(
+				[[
+					\texttt{{{}}}
+				]], { i(1, "<TEXT>") }
+			))
+		})
+
 		-- ls.add_snippets({"cpp", "c", "h"}, {
 		-- 	s("#dfhg", fmt(
 		-- 		[[
