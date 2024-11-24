@@ -12,7 +12,8 @@ local LANGUAGE_SERVERS = {
 	"cssmodules_ls",
 	"css_variables",
 	"ts_ls",
-	"eslint"
+	"eslint",
+	-- "jdtls",
 } -- this is a shitty patchwork fix for automatically configuring all language servers
 
 return {
@@ -53,7 +54,7 @@ return {
 
 		-- clangd
 		require('lspconfig')['clangd'].setup {
-			cmd = { "clangd", "--header-insertion=never"}, -- have to specify headerInsertion here cause config.yaml doesn't want to goddamn cooperate
+			cmd = { "clangd", "--header-insertion=never",}, -- have to specify headerInsertion here cause config.yaml doesn't want to goddamn cooperate
 			capabilities = capabilities
 		}
 
@@ -93,6 +94,11 @@ return {
 		-- cssls
 
 		require'lspconfig'.cssls.setup {
+			capabilities = capabilities,
+		}
+
+		-- jdtls
+		require'lspconfig'.jdtls.setup {
 			capabilities = capabilities,
 		}
 
