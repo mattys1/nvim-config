@@ -24,7 +24,20 @@ return {
 					\includegraphics[width=1\textwidth]{{images/{}}}
 					\caption{{\centering{{{}}}}}
 				\end{{figure}}
-				]], { i(1, "path/to/image"), i(2, "Caption text") }
+				]], { i(1, "path/to/image"), i(2, "<CAPTION_TEXT>") }
+			))
+		})
+
+		ls.add_snippets("tex", {
+			s("limag", fmt(
+				[[
+				\begin{{figure}}[H]
+					\centering
+					\includegraphics[width=1\textwidth]{{images/{}}}
+					\caption{{\centering{{{}}}}}
+					\label{{fig:{}}}
+				\end{{figure}}
+				]], { i(1, "path/to/image"), i(2, "<CAPTION_TEXT>"), i(3, "<FIGURE_NAME>") }
 			))
 		})
 
@@ -43,6 +56,19 @@ return {
 				]], { i(1, "<TEXT>") }
 			))
 		})
+
+		ls.add_snippets("bib", {
+			s("onl", fmt(
+				[[
+					@online(
+						{},
+						title = {{{}}},
+						url = {{{}}},
+					)
+				]], { i(1, "<CITE_NAME>"), i(2, "<TITLE>"), i(3, "<URL>") }
+			))
+		})
+
 
 		-- ls.add_snippets({"cpp", "c", "h"}, {
 		-- 	s("#dfhg", fmt(

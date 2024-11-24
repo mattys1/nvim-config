@@ -11,7 +11,8 @@ local LANGUAGE_SERVERS = {
 	"cssls",
 	"cssmodules_ls",
 	"css_variables",
-	"kotlin_language_server",
+	"ts_ls",
+	"eslint"
 } -- this is a shitty patchwork fix for automatically configuring all language servers
 
 return {
@@ -78,14 +79,22 @@ return {
 			capabilities = capabilities,
 		}
 
+	-- typescript
+
+		lspconfig.ts_ls.setup({
+			capabilities = capabilities,
+			settings = {
+				completions = {
+					completeFunctionCalls = true
+				}
+			}
+		})
+
 		-- cssls
 
 		require'lspconfig'.cssls.setup {
 			capabilities = capabilities,
 		}
-
-		-- kotlin
-		require'lspconfig'.kotlin_language_server.setup {}
 
 		-- lsp_remaps:
 		local map = vim.keymap.set

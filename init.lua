@@ -57,7 +57,6 @@ vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
 		vim.cmd[[
 			call pencil#init()
 		]]
-		vim.cmd(":VimtexCompile") -- this probably should be in the vimtex plugin file
 	end
 })
 -- REMAPS: 
@@ -118,6 +117,7 @@ callback = function()
 	map("x", "j", "gj")
 	map("n", "k", "gk")
 	map("x", "k", "gk")
+	map("n", "zn", "]s1z=")
 	-- map({"i", 'v'}, "<ESC>", "<ESC>gqap")
 end
 })
