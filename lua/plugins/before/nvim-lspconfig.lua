@@ -12,7 +12,14 @@ local LANGUAGE_SERVERS = {
 	"cssmodules_ls",
 	"css_variables",
 	"ts_ls",
-	"eslint",
+	-- "eslint",
+	"dockerls",
+	"docker_compose_language_service",
+	"gopls",
+	"omnisharp",
+	"jsonls",
+	"sqls",
+	-- "matlab_ls"
 	-- "jdtls",
 } -- this is a shitty patchwork fix for automatically configuring all language servers
 
@@ -58,6 +65,43 @@ return {
 			capabilities = capabilities
 		}
 
+		-- sqls
+		require('lspconfig')['sqls'].setup {
+			capabilities = capabilities,
+			settings = {
+				sqls = {
+					connections = {
+						{
+							driver = 'mysql',
+							-- proto = 'tcp',
+							-- user = 'root',
+							-- passwd = "mattys",
+							-- host = '127.0.0.1',
+							-- port = '3306',
+							-- dbName = 'raptorchat_db',
+							-- dbName = 'test',
+							dataSourceName = 'root:admin123@tcp(127.0.0.1:3307)/raptorchat_db',
+							params = {
+								tls = "skip-verify"
+							}
+						},
+
+						{
+							driver = 'mysql',
+							-- proto = 'tcp',
+							-- user = 'root',
+							-- passwd = "mattys",
+							-- host = '127.0.0.1',
+							-- port = '3306',
+							-- dbName = 'raptorchat_db',
+							-- dbName = 'test',
+							dataSourceName = 'mstanek:123@tcp(127.0.0.1:3306)/employees',
+						}
+					}
+				}
+			}
+		}
+
 		-- qmlls
 		require('lspconfig')['qmlls'].setup {
 			cmd = {"qmlls6"},
@@ -95,11 +139,88 @@ return {
 
 		require'lspconfig'.cssls.setup {
 			capabilities = capabilities,
+			filetypes = { 'css', 'scss', 'less', 'javascriptreact', 'typescriptreact', 'javascript', 'typescript', 'html' },
+			settings = {
+				css = {
+					validate = true,
+					lint = {
+						unknownAtRules = "ignore"
+					}
+				},
+				scss = {
+					validate = true
+				},
+				less = {
+					validate = true
+				}
+			},
+
+			command = { "~/.local/share/mason/bin/vscode-css-language-server", "--stdio" },
 		}
 
 		-- jdtls
 		require'lspconfig'.jdtls.setup {
 			capabilities = capabilities,
+		}
+
+		-- omnisharp
+		require'lspconfig'.omnisharp.setup {
+			cmd = { "dotnet", "/home/mattys/.local/share/nvim/mason/packages/omnisharp/libexec/OmniSharp.dll" },
+
+			settings = {
+				FormattingOptions = {
+					-- Enables support for reading code style, naming convention and analyzer
+					-- settings from .editorconfig.
+					EnableEditorConfigSupport = true,
+					-- Specifies whether 'using' directives should be grouped and sorted during
+					-- document formatting.
+					OrganizeImports = nil,
+				},
+				MsBuild = {
+					-- If true, MSBuild project system will only load projects for files that
+					-- were opened in the editor. This setting is useful for big C# codebases
+					-- and allows for faster initialization of code navigation features only
+					-- for projects that are relevant to code that is being edited. With this
+					-- setting enabled OmniSharp may load fewer projects and may thus display
+					-- incomplete reference lists for symbols.
+					LoadProjectsOnDemand = nil,
+				},
+				RoslynExtensionsOptions = {
+					-- Enables support for roslyn analyzers, code fixes and rulesets.
+					EnableAnalyzersSupport = nil,
+					-- Enables support for showing unimported types and unimported extension
+					-- methods in completion lists. When committed, the appropriate using
+					-- directive will be added at the top of the current file. This option can
+					-- have a negative impact on initial completion responsiveness,
+					-- particularly for the first few completion sessions after opening a
+					-- solution.
+					EnableImportCompletion = nil,
+					-- Only run analyzers against open files when 'enableRoslynAnalyzers' is
+					-- true
+					AnalyzeOpenDocumentsOnly = nil,
+				},
+				Sdk = {
+					-- Specifies whether to include preview versions of the .NET SDK when
+					-- determining which version to use for project loading.
+					IncludePrereleases = true,
+				},
+			},
+		}
+
+		-- matlab_ls
+
+		require'lspconfig'.matlab_ls.setup {
+			capabilities = capabilities,
+			cmd = { "matlab-language-server", "--stdio" },
+			settings = {
+				MATLAB = {
+					indexWorkspace = true,
+					installPath = "",
+					matlabConnectionTiming = "onStart",
+					telemetry = true
+				  }
+			},
+			single_file_support = true
 		}
 
 		-- lsp_remaps:

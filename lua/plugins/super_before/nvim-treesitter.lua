@@ -1,3 +1,5 @@
+local disabledFiletypes = { }
+
 return {
 	"nvim-treesitter/nvim-treesitter",
 	build = ":TSUpdate",
@@ -6,9 +8,11 @@ return {
 		vim.opt.shiftwidth = 4
 		require("nvim-treesitter.configs").setup({
 			ensure_installed = {"c", "cpp", "lua", "vim", "vimdoc", "query", "python", "markdown", "asm", "latex", "bash"},
+			ignore_install = { 'org' },
 			auto_install = true,
 			highlight = {
 				enable = true,
+				disable = disabledFiletypes
 			},
 			incremental_selection = {
 				enable = true,
@@ -60,7 +64,8 @@ return {
 				},
 			},
 			indent = { -- use treesitter indentation
-				enable = true
+				enable = true,
+				disabledFiletypes = disabledFiletypes,
 			}
 		})
 	end

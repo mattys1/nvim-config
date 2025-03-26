@@ -21,7 +21,7 @@ return {
 			},
 			mapping = cmp.mapping.preset.insert({
 				["<C-p>"] = cmp.config.disable,
-                ["<C-n>"] = cmp.config.disable,
+				["<C-n>"] = cmp.config.disable,
 				['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item()),
 				['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item()),
 				['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -36,17 +36,17 @@ return {
 				{ name = 'luasnip' }, -- For luasnip users.
 				-- { name = 'ultisnips' }, -- For ultisnips users.
 				-- { name = 'snippy' }, -- For snippy users.
-				}, {
-					{ name = 'buffer' },
+
+				{ name = 'buffer' },
 			})
 		})
 		-- Set configuration for specific filetype.
 		cmp.setup.filetype('gitcommit', {
 			sources = cmp.config.sources({
 				{ name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
-				}, {
+			}, {
 					{ name = 'buffer' },
-			})
+				})
 		})
 		-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
 		cmp.setup.cmdline({ '/', '?' }, {
@@ -60,9 +60,9 @@ return {
 			mapping = cmp.mapping.preset.cmdline(),
 			sources = cmp.config.sources({
 				{ name = 'path' }
-				}, {
+			}, {
 					{ name = 'cmdline' }
-			}),
+				}),
 			matching = { disallow_symbol_nonprefix_matching = false }
 		})
 		-- Set up lspconfig.

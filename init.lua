@@ -4,6 +4,17 @@ vim.g.mapleader = ' '
 vim.g.netrw_keepdir = true
 -- vim.g.loaded_netrwPlugin = false
 
+-- hack cause terminal background transparency doesn't work without it
+-- vim.cmd(
+-- 	[[
+-- 	augroup Catpuccin
+-- 	autocmd!
+-- 	autocmd ColorScheme * highlight Normal guibg=NONE ctermbg=NONE
+-- 	autocmd ColorScheme * highlight NonText guibg=NONE ctermbg=NONE
+-- 	augroup END
+-- 	]]
+-- )
+
 -- PLUGINS:
 require("plugins")
 -- force english
@@ -90,9 +101,6 @@ map('n', '<leader>D', 'D')
 map('v', '<leader>d', 'd')
 map('v', '<leader>D', 'D')
 
--- Remap leader p to delete and paste in visual mode
-map('x', '<leader>p', '_dP')
-
 -- Auto screen recentering on scroll
 map('n', '<C-u>', '<C-u>zz')
 map('n', '<C-d>', '<C-d>zz')
@@ -108,6 +116,13 @@ map('n', '<leader>w', function() vim.cmd.write() end)
 
 --quick :q!
 map('n', '<leader>q', function() vim.cmd(":q!") end)
+
+map('n', '<leader>ldq', function()
+	vim.diagnostic.setloclist({ open = true })
+end)
+
+-- fuck
+vim.keymap.set('n', '<leader>pi', ':PastifyAfter<CR>')
 
 -- markdown and latex remaps for better movement in wrapped lines
 vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
@@ -148,3 +163,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 		vim.highlight.on_yank()
 	end,
 })
+
+-- set ctags if there are any
+
+if vim.fn.filereadable("./tags") == 1 then
+	vim.opt.tags = "./tags"
+end

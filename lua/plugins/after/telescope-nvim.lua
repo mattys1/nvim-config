@@ -1,6 +1,9 @@
 return {
 	'nvim-telescope/telescope.nvim',
-	dependencies = {"nvim-lua/plenary.nvim"},
+	dependencies = {
+		"nvim-lua/plenary.nvim",
+		"nvim-telescope/telescope-ui-select.nvim"
+	},
 	tag = "0.1.6",
 	config = function()
 		local telescope = require("telescope")
@@ -20,6 +23,12 @@ return {
 					override_file_sorter = true,     -- override the file sorter
 					case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
 					-- the default case_mode is "smart_case"
+				},
+
+				["ui-select"] = {
+					-- require('telescope-themes').get_dropdown {
+					--
+					-- }
 				}
 			},
 		})
@@ -40,8 +49,19 @@ return {
 				require("telescope.builtin").live_grep()
 			end
 		end, {})
+
+		map('n', '<leader>ts', function()
+			local root = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), "\n", "")
+			if vim.v.shell_error == 0 then
+				require("telescope.builtin").lsp_dynamic_workspace_symbols({ cwd = root })
+			else
+				require("telescope.builtin").lsp_dynamic_workspace_symbols()
+			end
+		end, {})
+
 		map('n', '<leader>th', function() vim.cmd(":Telescope help_tags") end, {})
 		map('n', '<leader>tb', function() vim.cmd(":Telescope buffers") end, {})
 		telescope.load_extension('fzf')
+		telescope.load_extension('ui-select')
 	end
 }

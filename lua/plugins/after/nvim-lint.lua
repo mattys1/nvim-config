@@ -1,9 +1,10 @@
 return {
-	enabled = true,
+	enabled = false,
 	"mfussenegger/nvim-lint",
 	config = function()
 		require('lint').linters_by_ft = {
-			cpp = {"cppcheck"}
+			cpp = {"cppcheck"},
+			json = {"jsonlint"}
 		}
 
 		vim.api.nvim_create_autocmd({ "BufWritePost" }, {
