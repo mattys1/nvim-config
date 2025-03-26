@@ -3,6 +3,8 @@ return {
 	name = "catppuccin",
 	priority = 1000,
 	config = function()
+		local palette = require("catppuccin.palettes").get_palette("mocha")
+
 		require("catppuccin").setup({
 			flavour = "mocha", -- latte, frappe, macchiato, mocha
 			transparent_background = true, -- disables setting the background color.
@@ -32,7 +34,9 @@ return {
 				-- miscs = {}, -- Uncomment to turn off hard-coded styles
 			},
 			color_overrides = {},
-			custom_highlights = {},
+			custom_highlights = {
+				Pmenu = { bg = palette.base },
+			},
 			default_integrations = true,
 			integrations = {
 				cmp = true,
