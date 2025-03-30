@@ -14,5 +14,6 @@ return {
 		require("CopilotChat").setup({
 			model = "claude-3.7-sonnet-thought"
 		})
+		vim.keymap.set({"n", "v"}, "<leader>cpc", "<cmd>CopilotChat<cr>", { noremap = true, silent = true })
 	end,
 }
