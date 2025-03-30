@@ -12,7 +12,7 @@ local LANGUAGE_SERVERS = {
 	"cssmodules_ls",
 	"css_variables",
 	"ts_ls",
-	-- "eslint",
+	"eslint",
 	"dockerls",
 	"docker_compose_language_service",
 	"gopls",
@@ -25,6 +25,7 @@ local LANGUAGE_SERVERS = {
 
 return {
 	'neovim/nvim-lspconfig',
+	dpeendencies = {"artemave/workspace-diagnostics.nvim"},
 	config = function()
 		-- lsp:
 		local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -118,12 +119,6 @@ return {
 			end
 		}
 
-		-- vscode-html-language-server
-
-		require'lspconfig'.html.setup {
-			capabilities = capabilities,
-		}
-
 	-- typescript
 
 		lspconfig.ts_ls.setup({
@@ -131,8 +126,26 @@ return {
 			settings = {
 				completions = {
 					completeFunctionCalls = true
-				}
-			}
+				},
+			},
+
+			on_attach = function(client, bufnr)
+				require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
+			end
+
+			-- handlers = {
+			-- 	["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
+			-- 		-- log the diagnostics in a file
+			-- 		local file = io.open("/tmp/lsp.log", "a")
+			-- 		for _, diagnostic in ipairs(result.diagnostics) do
+			-- 			if file then
+			-- 				file:write(string.format("[%s] %s\n", os.date(), vim.inspect(diagnostic)))
+			-- 			end
+			-- 		end
+			--
+			-- 		return result
+			-- 	end
+			-- },
 		})
 
 		-- cssls
@@ -155,7 +168,7 @@ return {
 				}
 			},
 
-			command = { "~/.local/share/mason/bin/vscode-css-language-server", "--stdio" },
+			command = {os.getenv("HOME").."/.local/share/mason/bin/vscode-css-language-server", "--stdio" },
 		}
 
 		-- jdtls

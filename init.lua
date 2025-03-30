@@ -117,9 +117,9 @@ map('n', '<leader>w', function() vim.cmd.write() end)
 --quick :q!
 map('n', '<leader>q', function() vim.cmd(":q!") end)
 
-map('n', '<leader>ldq', function()
-	vim.diagnostic.setloclist({ open = true })
-end)
+-- map('n', '<leader>ldq', function()
+-- 	vim.diagnostic.setloclist({ open = true })
+-- end)
 
 -- fuck
 vim.keymap.set('n', '<leader>pi', ':PastifyAfter<CR>')
