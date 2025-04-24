@@ -25,6 +25,17 @@ return {
 				end
 			end,
 		})
+
+		vim.api.nvim_create_autocmd("User", {
+			group = vim.api.nvim_create_augroup("vimtex", { clear = true }),
+			pattern = "VimtexEventView",
+			callback = function()
+				vim.cmd([[
+					call b:vimtex.viewer.xdo_focus_vim()
+				]])
+			end,
+		})
+
 	end
 
 }

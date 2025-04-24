@@ -12,7 +12,7 @@ local LANGUAGE_SERVERS = {
 	"cssmodules_ls",
 	"css_variables",
 	"ts_ls",
-	"eslint",
+	-- "eslint",
 	"dockerls",
 	"docker_compose_language_service",
 	"gopls",
@@ -176,6 +176,14 @@ return {
 			capabilities = capabilities,
 		}
 
+		-- gopls
+		require'lspconfig'.gopls.setup {
+			capabilities = capabilities,
+			on_attach = function(client, bufnr)
+				require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
+			end
+		}
+
 		-- omnisharp
 		require'lspconfig'.omnisharp.setup {
 			cmd = { "dotnet", "/home/mattys/.local/share/nvim/mason/packages/omnisharp/libexec/OmniSharp.dll" },
@@ -218,22 +226,6 @@ return {
 					IncludePrereleases = true,
 				},
 			},
-		}
-
-		-- matlab_ls
-
-		require'lspconfig'.matlab_ls.setup {
-			capabilities = capabilities,
-			cmd = { "matlab-language-server", "--stdio" },
-			settings = {
-				MATLAB = {
-					indexWorkspace = true,
-					installPath = "",
-					matlabConnectionTiming = "onStart",
-					telemetry = true
-				  }
-			},
-			single_file_support = true
 		}
 
 		-- lsp_remaps:

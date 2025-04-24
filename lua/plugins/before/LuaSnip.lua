@@ -42,6 +42,16 @@ return {
 		})
 
 		ls.add_snippets("tex", {
+			s("lst", fmt(
+				[[
+				\begin{{lstlisting}}[language={}, caption={{{}}}] 
+				{}
+				\end{{lstlisting}}
+				]], { i(1, "text"), i(2, "<CAPTION>"), i(3, "<CONTENTS>") }
+			))
+		})
+
+		ls.add_snippets("tex", {
 			s("sss", fmt(
 				[[
 					\somestuffstyle{{{}}}
