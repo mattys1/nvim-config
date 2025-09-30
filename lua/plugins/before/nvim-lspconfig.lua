@@ -11,6 +11,7 @@ local LANGUAGE_SERVERS = {
 	"cssls",
 	"cssmodules_ls",
 	"css_variables",
+	"tailwindcss",
 	"ts_ls",
 	-- "eslint",
 	"dockerls",
@@ -19,13 +20,13 @@ local LANGUAGE_SERVERS = {
 	"omnisharp",
 	"jsonls",
 	"sqls",
+	"groovyls",
 	-- "matlab_ls"
-	-- "jdtls",
 } -- this is a shitty patchwork fix for automatically configuring all language servers
 
 return {
 	'neovim/nvim-lspconfig',
-	dpeendencies = {"artemave/workspace-diagnostics.nvim"},
+	dependencies = {"artemave/workspace-diagnostics.nvim", "nvim-java/nvim-java"},
 	config = function()
 		-- lsp:
 		local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -81,10 +82,7 @@ return {
 							-- port = '3306',
 							-- dbName = 'raptorchat_db',
 							-- dbName = 'test',
-							dataSourceName = 'root:admin123@tcp(127.0.0.1:3307)/raptorchat_db',
-							params = {
-								tls = "skip-verify"
-							}
+							dataSourceName = 'mstanek:123@tcp(127.0.0.1:3306)/employees',
 						},
 
 						{
@@ -96,8 +94,12 @@ return {
 							-- port = '3306',
 							-- dbName = 'raptorchat_db',
 							-- dbName = 'test',
-							dataSourceName = 'mstanek:123@tcp(127.0.0.1:3306)/employees',
-						}
+							dataSourceName = 'root:admin123@tcp(127.0.0.1:3307)/raptorchat_db',
+							params = {
+								tls = "skip-verify"
+							}
+						},
+
 					}
 				}
 			}
@@ -171,17 +173,57 @@ return {
 			command = {os.getenv("HOME").."/.local/share/mason/bin/vscode-css-language-server", "--stdio" },
 		}
 
-		-- jdtls
-		require'lspconfig'.jdtls.setup {
-			capabilities = capabilities,
-		}
-
 		-- gopls
 		require'lspconfig'.gopls.setup {
 			capabilities = capabilities,
 			on_attach = function(client, bufnr)
 				require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
 			end
+		}
+
+		-- jdtls
+		require'lspconfig'.jdtls.setup({
+			settings = {
+				java = {
+					configuration = {
+						runtimes = {
+							{
+								name = "JavaSE-21",
+								path = "/usr/lib/jvm/java-21-openjdk",
+								default = true,
+							}
+						}
+					},
+				},
+			},
+
+			init_options = {
+				settings = {
+					java = {
+						-- implementationsCodeLens = { enabled = true },
+						imports = {
+							gradle = {
+								enabled = true,
+								wrapper = {
+									enabled = true,
+									checksums = {
+										{
+											sha256  = "81a82aaea5abcc8ff68b3dfcb58b3c3c429378efd98e7433460610fecd7ae45f",
+											allowed = true,
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+				-- bundles = {},
+			},
+		})
+		-- groovyls
+		require'lspconfig'.groovyls.setup{
+			cmd = { "groovy-language-server" },
+			capabilities = capabilities,
 		}
 
 		-- omnisharp
@@ -239,14 +281,14 @@ return {
 				-- Buffer local mappings.
 				-- See `:help vim.lsp.*` for documentation on any of the below function
 				local opts = {buffer = ev.buf}
-				map('n', '<leader>lgc', vim.lsp.buf.declaration, opts)
-				map('n', '<leader>lgf', vim.lsp.buf.definition, opts)
-				map('n', '<leader>lh', vim.lsp.buf.hover, opts)
-				map('n', '<leader>lgt', vim.lsp.buf.type_definition, opts)
-				map('n', '<leader>lR', vim.lsp.buf.references, opts)
-				map('n', '<leader>lr', vim.lsp.buf.rename, opts)
-				map('n', '<leader>lca', vim.lsp.buf.code_action, opts)
-				map('n', '<leader>lF', function()
+				map({ 'n', 'v' }, '<leader>lgc', vim.lsp.buf.declaration, opts)
+				map({ 'n', 'v' }, '<leader>lgf', vim.lsp.buf.definition, opts)
+				map({ 'n', 'v' }, '<leader>lh', vim.lsp.buf.hover, opts)
+				map({ 'n', 'v' }, '<leader>lgt', vim.lsp.buf.type_definition, opts)
+				map({ 'n', 'v' }, '<leader>lR', vim.lsp.buf.references, opts)
+				map({ 'n', 'v' }, '<leader>lr', vim.lsp.buf.rename, opts)
+				map({ 'n', 'v' }, '<leader>lca', vim.lsp.buf.code_action, opts)
+				map({ 'n', 'v' }, '<leader>lF', function()
 					vim.lsp.buf.format { async = true }
 				end, opts)
 			end

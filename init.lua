@@ -90,6 +90,9 @@ map('n', 'dd', '"_dd')
 map('n', 'D', '"_D')
 map('x', 'D', '"_D')
 
+-- same thing with p in visual mode
+map('x', 'p', '"_dP')
+
 -- same thing with c
 map('x', 'c', '"_c')
 map('n', 'c', '"_c')
