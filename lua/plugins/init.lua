@@ -1,35 +1,16 @@
-local earlyPlugs = vim.api.nvim_get_runtime_file("lua/plugins/before/*.lua", true)
-local earlyPlugsContents = {}
+local plugDir = vim.tbl_filter(function(path)
+	return not path:match("init%.lua$")
+end, vim.api.nvim_get_runtime_file("lua/plugins/*.lua", true));
 
-for _, plug in ipairs(earlyPlugs) do
+local plugins = {}
+
+for _, plug in ipairs(plugDir) do
 	-- vim.print(plug)
-	table.insert(earlyPlugsContents, require(plug:match("lua/(.-)%.lua$"):gsub("/", ".")
+	table.insert(plugins, require(plug:match("lua/(.-)%.lua$"):gsub("/", ".")
 ))
 end
 
 -- vim.print(earlyPlugsContents)
-
-local latePlugs = vim.api.nvim_get_runtime_file("lua/plugins/after/*.lua", true)
-local latePlugsContents = {}
-
-for _, plug in ipairs(latePlugs) do
-	-- vim.print(plug)
-	-- vim.print(require(plug:match("lua/(.-)%.lua$"):gsub("/", ".")))
-	-- vim.print(latePlugsContents)
-	table.insert(latePlugsContents, require(plug:match("lua/(.-)%.lua$"):gsub("/", ".")
-))
-end
-
-local superEarlyPlugs = vim.api.nvim_get_runtime_file("lua/plugins/super_before/*.lua", true)
-local superEarlyPlugsContents = {}
-
-for _, plug in ipairs(superEarlyPlugs) do
-	-- vim.print(plug)
-	-- vim.print(require(plug:match("lua/(.-)%.lua$"):gsub("/", ".")))
-	-- vim.print(superEarlyPlugsContents)
-	table.insert(superEarlyPlugsContents, require(plug:match("lua/(.-)%.lua$"):gsub("/", ".")
-))
-end
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -46,9 +27,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup(
 	{
-		superEarlyPlugsContents,
-		earlyPlugsContents,
-		latePlugsContents,
+		plugins,
 	}, {
 		rocks = {
 			hererocks = true,  -- recommended if you do not have global installation of Lua 5.1.
