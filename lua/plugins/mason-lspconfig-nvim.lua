@@ -1,7 +1,12 @@
 return {
 	"mason-org/mason-lspconfig.nvim",
 	dependencies = {
-		{ "mason-org/mason.nvim", opts = {} },
+		{ "mason-org/mason.nvim", opts = {
+			registries = {
+				"github:mason-org/mason-registry",
+				"github:Crashdummyy/mason-registry",
+			}
+		} },
 		"neovim/nvim-lspconfig",
 	},
 	opts = {
@@ -16,6 +21,7 @@ return {
 			"cmake",
 			"html",
 			"cssls",
+			"rust_analyzer",
 			"cssmodules_ls",
 			"css_variables",
 			"tailwindcss",
@@ -28,6 +34,7 @@ return {
 			"jsonls",
 			"sqls",
 			"groovyls",
+			-- "rzls"
 			-- "matlab_ls"
 		},
 	}

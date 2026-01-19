@@ -1,6 +1,7 @@
 return {
 	"GustavEikaas/easy-dotnet.nvim",
-	dependencies = { "nvim-lua/plenary.nvim", 'nvim-telescope/telescope.nvim', },
+	enabled = false,
+	dependencies = { "nvim-lua/plenary.nvim", 'nvim-telescope/telescope.nvim', "seblyng/roslyn.nvim", },
 	config = function()
 		local function get_secret_path(secret_guid)
 			local path = ""
@@ -21,6 +22,9 @@ return {
 		dotnet.setup({
 			debugger = {
 				bin_path = "netcoredbg",
+			},
+			lsp = {
+				enabled = false,
 			},
 			--Optional function to return the path for the dotnet sdk (e.g C:/ProgramFiles/dotnet/sdk/8.0.0)
 			get_sdk_path = get_sdk_path,
@@ -93,10 +97,6 @@ return {
 		vim.api.nvim_create_user_command('Secrets', function()
 			dotnet.secrets()
 		end, {})
-
-		-- Example keybinding
-		vim.keymap.set("n", "<C-p>", function()
-			dotnet.run_project()
-		end)
+		local map = vim.keymap.set
 	end
 }
