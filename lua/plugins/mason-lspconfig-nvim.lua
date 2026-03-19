@@ -12,7 +12,7 @@ return {
 	opts = {
 		ensure_installed = {
 			"lua_ls",
-			"pyright",
+			"basedpyright",
 			"clangd",
 			"bashls",
 			"marksman",

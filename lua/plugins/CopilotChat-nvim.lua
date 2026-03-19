@@ -17,5 +17,6 @@ return {
 
 	config = function()
 		vim.keymap.set({"n", "v"}, "<leader>cpc", "<cmd>CopilotChat<cr>", { noremap = true, silent = true })
+		vim.keymap.set({"n", "v"}, "<leader>cpm", "<cmd>CopilotChatModels<cr>", { noremap = true, silent = true })
 	end,
 }

@@ -1,6 +1,6 @@
 return {
 	"seblyng/roslyn.nvim",
-	enabled = true,
+	enabled = false,
 	dependencies = {
 		{
 			-- "mason-org/mason.nvim",

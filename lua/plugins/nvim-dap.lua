@@ -8,6 +8,54 @@ return {
 			type = 'executable',
 			command = '/home/mattys/gdb/extension/debugAdapters/bin/OpenDebugAD7',
 		}
+		dap.adapters.codelldb = {
+			type = 'server',
+			port = "${port}",
+			executable = {
+				command = '/usr/bin/codelldb',
+				args = {"--port", "${port}"},
+			}
+		}
+
+		dap.configurations.rust = {
+			{
+				name = "Rust debug",
+				showDisassembly = "never",
+				type = "codelldb",
+				request = "launch",
+				program = function()
+					vim.fn.jobstart('cargo test --no-run')
+					return vim.fn.input('Path to executable: ', string.gsub(vim.fn.system("git rev-parse --show-toplevel"), "\n", "") .. '/target/debug/raptordb', 'file')
+				end,
+				cwd = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), "\n", ""),
+				stopOnEntry = true,
+			},
+
+			{
+				name = "Rust debug tests",
+				showDisassembly = "never",
+				type = "codelldb",
+				request = "launch",
+				program = function()
+					local output = vim.fn.systemlist('cargo test --no-run')
+					local last_line = output[#output]
+					local parts = vim.split(last_line, " ")
+					vim.print(parts)
+
+					local path = parts[6]
+					if path:sub(1, 1) == "(" then
+						path = path:sub(2)
+					end
+					if path:sub(-1) == ")" then
+						path = path:sub(1, -2)
+					end
+
+					return path
+				end,
+				cwd = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), "\n", ""),
+				stopOnEntry = true,
+			},
+		}
 
 		dap.configurations.cpp = {
 			{

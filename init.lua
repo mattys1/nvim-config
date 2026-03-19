@@ -24,6 +24,7 @@ require("plugins")
 
 vim.opt.splitbelow = true             -- when a new window splits vertically, split below
 vim.opt.splitright = true             --when a new window splits horizontally, split to the right
+vim.opt.swapfile = false
 
 -- Tabs:
 
@@ -123,6 +124,9 @@ map('n', '<leader>q', function() vim.cmd(":q!") end)
 -- map('n', '<leader>ldq', function()
 -- 	vim.diagnostic.setloclist({ open = true })
 -- end)
+
+-- diagnostic as virtual text
+vim.diagnostic.config({ virtual_text = true, virtual_lines = false, severity_sort = true, update_in_insert = true });
 
 -- fuck
 vim.keymap.set('n', '<leader>pi', ':PastifyAfter<CR>')
