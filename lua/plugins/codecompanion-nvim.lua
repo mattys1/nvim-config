@@ -1,4 +1,5 @@
 return {
+	enabled = true,
 	"olimorris/codecompanion.nvim",
 	version = "^19.0.0",
 	opts = {},
@@ -12,6 +13,17 @@ return {
 		local map = vim.keymap.set
 		map({"n", "v"}, "<leader>ccc", "<cmd>CodeCompanionChat Toggle<cr>")
 		require("codecompanion").setup({
+			interactions = {
+				chat = {
+					adapter = {
+						name = "claude_code",
+						model = "opus",
+					},
+				},
+			},
+			title_generation_opts = {
+				enable = false,
+			},
 			extensions = {
 				history = {
 					enabled = true, -- defaults to true

@@ -52,6 +52,21 @@ return {
 		})
 
 		ls.add_snippets("tex", {
+			s("mlst", fmt(
+				[[
+				\begin{{listing}}[H]
+				\begin{{minted}}{{{}}}
+					{}
+				\end{{minted}}
+
+				\caption{{\centering{{{}}}}}
+				\label{{lst:{}}}
+				\end{{listing}}
+				]], { i(1, "rust"), i(4, "<CONTENTS>"), i(3, "<CAPTION>"), i(2, "<LABEL>"),}
+			))
+		})
+
+		ls.add_snippets("tex", {
 			s("sss", fmt(
 				[[
 					\somestuffstyle{{{}}}

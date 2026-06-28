@@ -2,6 +2,8 @@
 
 vim.g.mapleader = ' '
 vim.g.netrw_keepdir = true
+
+vim.opt.conceallevel = 2
 -- vim.g.loaded_netrwPlugin = false
 
 -- hack cause terminal background transparency doesn't work without it
@@ -25,6 +27,7 @@ require("plugins")
 vim.opt.splitbelow = true             -- when a new window splits vertically, split below
 vim.opt.splitright = true             --when a new window splits horizontally, split to the right
 vim.opt.swapfile = false
+
 
 -- Tabs:
 
@@ -66,9 +69,9 @@ vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
 		vim.opt.spelllang = {"en_us", "pl"}
 		-- vim.opt.wrap = true
 		vim.opt.textwidth = 80
-		vim.cmd[[
-			call pencil#init()
-		]]
+		-- vim.cmd[[
+		-- 	call pencil#init()
+		-- ]]
 	end
 })
 -- REMAPS: 

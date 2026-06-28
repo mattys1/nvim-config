@@ -5,6 +5,13 @@ return {
 		-- Set up nvim-cmp.
 		local cmp = require'cmp'
 		cmp.setup({
+			formatting = {
+				format = require('lspkind').cmp_format({
+					mode = "symbol",
+					max_width = 50,
+					symbol_map = { Copilot = "" }
+				})
+			},
 			snippet = {
 				-- REQUIRED - you must specify a snippet engine
 				expand = function(args)
@@ -28,13 +35,49 @@ return {
 				['<C-f>'] = cmp.mapping.scroll_docs(4),
 				['<C-Space>'] = cmp.mapping.complete(),
 				['<C-e>'] = cmp.mapping.abort(),
-				['<TAB>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+				["<CR>"] = cmp.mapping.confirm({ select = false }),
+				["<TAB>"] = cmp.mapping.confirm({ select = true }),
+				-- ['<TAB>'] = cmp.mapping(function(fallback)
+				-- 	if not cmp.visible() then
+				-- 		fallback()
+				-- 		return
+				-- 	end
+				--
+				-- 	local entries = cmp.get_entries()
+				-- 	if not entries or #entries == 0 then
+				-- 		fallback()
+				-- 		return
+				-- 	end
+				--
+				-- 	local target_index = nil
+				-- 	for i, entry in ipairs(entries) do
+				-- 		if entry.source.name ~= "copilot" then
+				-- 			target_index = i
+				-- 			break
+				-- 		end
+				-- 	end
+				--
+				-- 	if not target_index then
+				-- 		return;
+				-- 	end
+				--
+				-- 	cmp.select_next_item({ count = target_index - 1 })
+				-- 	cmp.confirm({ select = true })
+				-- end, { "i", "s" }),
+				['<S-TAB>'] = cmp.mapping(function(fallback)
+					if cmp.visible() then
+						cmp.confirm({ select = false })
+					else
+						fallback()
+					end
+				end, { "i", "s" }),
 			}),
 			sources = cmp.config.sources({
 				per_filetype = {
 					codecompanion = { "codecompanion" },
 				},
 				{ name = 'nvim_lsp' },
+				{ name = "copilot", group_index = 2 },
 				{ name = 'easy-dotnet' },
 				-- { name = 'vsnip' }, -- For vsnip users.
 				{ name = 'luasnip' }, -- For luasnip users.
