@@ -13,6 +13,8 @@ return {
 		ensure_installed = {
 			"lua_ls",
 			"basedpyright",
+			"ruff",
+			"pyrefly",
 			"clangd",
 			"bashls",
 			"marksman",
