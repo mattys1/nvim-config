@@ -26,6 +26,7 @@ return {
 			"css_variables",
 			"tailwindcss",
 			"ts_ls",
+			"vue_ls",
 			-- "eslint",
 			"dockerls",
 			"docker_compose_language_service",
